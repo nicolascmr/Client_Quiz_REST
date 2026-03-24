@@ -1,12 +1,10 @@
-<script setup>
-import QuestionsFormQCM from '../components/QuestionsFormQCM.vue';
-import QuestionsFormText from '../components/QuestionsFormText.vue';
-</script>
 <template>
   <main class="app-container">
     <div v-if="activeQuestion">
+      <div class="score">
+      </div>
       <h1>Question n°{{ activeQuestion.id }}</h1>
-      
+
       <QuestionsFormText
         v-if="activeQuestion.type === 'text'"
         :question_name="activeQuestion.question_name"
@@ -21,10 +19,22 @@ import QuestionsFormText from '../components/QuestionsFormText.vue';
         :answer="activeQuestion.answer"
         @isTrue="checkTruthiness"
       />
+
+      <div v-else>
+        <label for="score">Score : {{ score }} / {{ scoreMax }}</label>
+        <p>Vous avez fini le questionnaire!</p>
+      </div>
     </div>
 
     <div class="valider">
       <button @click="nextQuestion" class="valide_button">✅ Valider</button>
+    </div>
+
+    <div id="progress">
+      <ProgressBar
+      :valeurActuelle="currentQuestion"
+      :objectif="scoreMax" 
+      />
     </div>
   </main>
 </template>
@@ -32,9 +42,14 @@ import QuestionsFormText from '../components/QuestionsFormText.vue';
 <script>
 import QuestionsFormQCM from '../components/QuestionsFormQCM.vue';
 import QuestionsFormText from '../components/QuestionsFormText.vue';
+import ProgressBar from '../components/ProgressBar.vue';
 
 export default {
-  // ... tes imports et components ...
+  components: {
+    QuestionsFormQCM,
+    QuestionsFormText,
+    ProgressBar
+  },
   data() {
     return {
       currentQuestion: 0,
@@ -60,22 +75,31 @@ export default {
   },
   computed: {
     activeQuestion() {
-      return this.questions[this.currentQuestion];
+      return this.questions[this.currentQuestion] ?? null;
     }
   },
   methods: {
-    setScoreMax(){
-
+    setScoreMax() {
+      this.scoreMax = this.questions.length;
     },
-    incrementScore(){
-
+    incrementScore() {
+      this.score++;
     },
-    nextQuestion(){
-      this.currentQuestion++
+    nextQuestion() {
+      if (this.currentQuestion < this.questions.length - 1) {
+        this.currentQuestion++;
+      }
     },
-    checkTruthiness($event){
-        return this.input == $event.answer;
-    }
+    checkTruthiness(isTrue) {
+      if (isTrue) {
+        this.incrementScore();
+      }
+      return isTrue;
+    },
+    
+  },
+  beforeMount() {
+    this.setScoreMax();
   }
-}
+};
 </script>
