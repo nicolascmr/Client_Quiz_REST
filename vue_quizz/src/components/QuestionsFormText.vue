@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  question_name: '',
   props: {
-    input: '',
-    answer: ''
+    question_name: String,
+    input: String,
+    answer: String
   },
 
   methods:{
