@@ -19,20 +19,28 @@
         :answer="activeQuestion.answer"
         @isTrue="checkTruthiness"
       />
-
-      <div v-else>
-        <label for="score">Score : {{ score }} / {{ scoreMax }}</label>
-        <p>Vous avez fini le questionnaire!</p>
-      </div>
     </div>
 
-    <div class="valider">
-      <button @click="nextQuestion" class="valide_button">✅ Valider</button>
+    <div v-else>
+      <label for="score">Score : {{ score }} / {{ scoreMax }}</label>
+      <p>Vous avez fini le questionnaire!</p>
+    </div>
+
+    <div v-if="canGoNext" class="">
+      <div class="retour">
+        <button @click="previousQuestion" :disabled="!canGoPrevious">Retour à la question d'avant</button>
+      </div>
+      <div v-if="canGoNext" class="valider">
+        <button @click="nextQuestion" class="valide_button">➡️ Prochaine Question</button>
+      </div>
+      <div v-else>
+        <button disabled>❗ Fin du quiz</button>
+      </div>
     </div>
 
     <div id="progress">
       <ProgressBar
-      :valeurActuelle="currentQuestion"
+      :valeurActuelle="progressValue"
       :objectif="scoreMax" 
       />
     </div>
@@ -54,7 +62,7 @@ export default {
     return {
       currentQuestion: 0,
       dailyGoal: 8,
-      score: 0,
+      correctAnswers: {}, // On remplace "score: 0" par un objet qui garde l'état de chaque question
       scoreMax: 0,
       questions: [
         {
@@ -74,28 +82,45 @@ export default {
     };
   },
   computed: {
+    score() {
+      // Calcule le score en comptant les questions où la réponse enregistrée est `true`
+      return Object.values(this.correctAnswers).filter(isCorrect => isCorrect === true).length;
+    },
     activeQuestion() {
       return this.questions[this.currentQuestion] ?? null;
+    },
+    canGoPrevious() {
+      return this.currentQuestion > 0;
+    },
+    canGoNext() {
+      return this.currentQuestion < this.scoreMax;
+    },
+    progressValue() {
+      if (this.scoreMax === 0) return 0;
+      return Math.min(this.currentQuestion + 1, this.scoreMax);
     }
   },
   methods: {
     setScoreMax() {
       this.scoreMax = this.questions.length;
     },
-    incrementScore() {
-      this.score++;
+    checkTruthiness(payload) {
+      // payload contient {answer: true/false} pour QCM ou {bool: true/false} pour Text
+      const isCorrect = payload.answer !== undefined ? payload.answer : payload.bool;
+      
+      // On associe directement vrai ou faux selon l'index de la question actuelle
+      this.correctAnswers[this.currentQuestion] = isCorrect;
+    },
+    previousQuestion() {
+      if (this.currentQuestion > 0) {
+        this.currentQuestion--;
+      }
     },
     nextQuestion() {
-      if (this.currentQuestion < this.questions.length - 1) {
+      if (this.currentQuestion < this.scoreMax) {
         this.currentQuestion++;
       }
-    },
-    checkTruthiness(isTrue) {
-      if (isTrue) {
-        this.incrementScore();
-      }
-      return isTrue;
-    },
+    }
     
   },
   beforeMount() {

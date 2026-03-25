@@ -1,7 +1,7 @@
 <template>
   <div class="form-text">
     <h3>{{ question_name }}</h3>
-    <input class="input" type="text">
+    <input class="input" type="text" v-model="input" @input="checkTruthiness">
   </div>
 </template>
 
@@ -9,13 +9,18 @@
 export default {
   props: {
     question_name: String,
-    input: String,
     answer: String
+  },
+
+  data() {
+    return {
+      input: ""
+    }
   },
 
   methods:{
     checkTruthiness : function() {
-        this.$emit('isTrue',{answer: this.answer});
+        this.$emit('isTrue',{bool: this.answer == this.input});
     }
   },
   emits : ['isTrue']
