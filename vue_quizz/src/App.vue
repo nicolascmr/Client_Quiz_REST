@@ -1,4 +1,6 @@
 <script setup>
+import AdminView from './views/AdminView.vue';
+
 </script>
 
 <template>
