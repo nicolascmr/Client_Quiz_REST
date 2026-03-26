@@ -25,6 +25,10 @@ export default{
             this.get()
 
       },
+      modifyItem: async function(quiz) {
+            await this.api.modifyQuiz(quiz.id, quiz.nom)
+            this.get()
+      },
     },
     
     mounted: async function() {
@@ -34,8 +38,8 @@ export default{
 </script>
 <template>
     <ul>
-        <li v-for="quiz in quizList" :key="quiz.id">
-            <QuizItem :quiz="quiz" @remove="removeItem(quiz)"></QuizItem>
+        <li v-for="(quiz, index) in quizList" :key="quiz.id">
+            <QuizItem :quiz="quiz" :index="index" @remove="removeItem(quiz)" @modify="modifyItem(quiz)"></QuizItem>
         </li>
     </ul>
 </template>

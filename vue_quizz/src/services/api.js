@@ -29,4 +29,25 @@ export default class API {
         }
     }
 
+    async modifyQuiz(id, text) {
+        try{
+            const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({nom : text})
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Erreur de suppression");
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur suppression:", error);
+            throw error;
+        }
+    }
+
 }
