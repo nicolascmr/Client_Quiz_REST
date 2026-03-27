@@ -37,9 +37,18 @@ export default{
 }
 </script>
 <template>
-    <ul>
-        <li v-for="(quiz, index) in quizList" :key="quiz.id">
+    <div id="main">
+        <form>
+            <label>Nom : </label>
+            <input type="text" name="name" required />
+            <input type="submit" value="Créer le quiz">
+        </form>
+        <div v-for="(quiz, index) in quizList" :key="quiz.id">
             <QuizItem :quiz="quiz" :index="index" @remove="removeItem(quiz)" @modify="modifyItem(quiz)"></QuizItem>
-        </li>
-    </ul>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+</style>
+

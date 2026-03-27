@@ -29,14 +29,14 @@ export default class API {
         }
     }
 
-    async modifyQuiz(id, text) {
+    async modifyQuiz(id, nom) {
         try{
             const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({nom : text})
+                body: JSON.stringify({nom : nom})
             });
             if (!response.ok) {
                 const errorData = await response.json();
