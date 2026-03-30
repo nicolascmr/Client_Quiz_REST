@@ -9,6 +9,7 @@ export default{
     data() {
         return {
             quizList: [],
+            newQuizNom: '',
             api: new API()
         }
     },
@@ -29,6 +30,11 @@ export default{
             await this.api.modifyQuiz(quiz.id, quiz.nom)
             this.get()
       },
+      addItem: async function() {
+              await this.api.addQuiz(this.newQuizNom);
+              this.newQuizNom = '';
+              this.get();
+      }
     },
     
     mounted: async function() {
@@ -38,9 +44,9 @@ export default{
 </script>
 <template>
     <div id="main">
-        <form>
+        <form @submit.prevent="addItem">
             <label>Nom : </label>
-            <input type="text" name="name" required />
+            <input type="text" name="name" v-model="newQuizNom" required />
             <input type="submit" value="Créer le quiz">
         </form>
         <div v-for="(quiz, index) in quizList" :key="quiz.id">
