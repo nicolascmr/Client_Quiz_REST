@@ -12,6 +12,15 @@ export default class API {
         return null;
     }
 
+    async getQuiz(id){
+        const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`);
+        if (response.ok){
+            const json = await response.json();
+            return json;
+        }
+        return null;
+    }
+
     async deleteQuiz(id) {
         try{
             const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`, {

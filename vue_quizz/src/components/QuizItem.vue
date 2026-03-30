@@ -32,6 +32,7 @@ export default{
         <button @click="toggleEdit" type="button">
           {{ editing[index] ? 'OK' : 'Éditer' }}
         </button>
+        <RouterLink :to="`/admin/quiz/${quiz.id}`" class="btn">Détail</RouterLink>
         <input type="button"
                 class="btn btn-danger"
                 value="Supprimer"
