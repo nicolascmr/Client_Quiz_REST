@@ -36,17 +36,27 @@ def create_quizz():
 def create_question(questionnaire_id):
     if not request.json or not 'enonce' in request.json:
         return abort(400)
+    
     questionnaire = Questionnaire.query.get(questionnaire_id)
-    if questionnaire:
-        enonce = request.json['enonce']
-        question_type = request.json.get('question_type', 'question')
-        reponse = request.json.get('reponse')
-        proposition1 = request.json.get('proposition1')
-        proposition2 = request.json.get('proposition2')
-        bonne_reponse = request.json.get('bonne_reponse')
-        question = questionnaire.add_question(enonce, question_type, reponse, proposition1, proposition2, bonne_reponse)
-        return jsonify ({'question': question.to_json()}), 201
-    return abort(404)
+    if not questionnaire:
+        return abort(404)
+        
+    question_type = request.json.get('question_type', 'question')
+    reponse = request.json.get('reponse')
+    proposition1 = request.json.get('proposition1')
+    proposition2 = request.json.get('proposition2')
+    bonne_reponse = request.json.get('bonne_reponse')
+    
+    question = questionnaire.add_question(
+        enonce=request.json['enonce'],
+        question_type=question_type,
+        reponse=reponse,
+        proposition1=proposition1,
+        proposition2=proposition2,
+        bonne_reponse=bonne_reponse
+    )
+    
+    return jsonify ({'question': question.to_json()}), 201
     
 @app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>', methods = ['PUT'])
 def modify_quizz(questionnaire_id):
@@ -59,19 +69,22 @@ def modify_quizz(questionnaire_id):
         return jsonify ({'questionnaire': questionnaire.to_json()}), 201
     return abort(404)
 
-@app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>/<int:question_id>', methods = ['POST'])
+@app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>/<int:question_id>', methods = ['PUT'])
 def modify_question(questionnaire_id, question_id):
     if not request.json or not 'enonce' in request.json:
         return abort(400)
     questionnaire = Questionnaire.query.get(questionnaire_id)
     question = questionnaire.get_question(question_id)
-    if questionnaire:
+    if question:
         question.enonce = request.json['enonce']
-        question.question_type = request.json.get('question_type', 'question')
-        question.reponse = request.json.get('reponse')
-        question.proposition1 = request.json.get('proposition1')
-        question.proposition2 = request.json.get('proposition2')
-        question.bonne_reponse = request.json.get('bonne_reponse')
+        if question.question_type == 'questionOuverte':
+            question.reponse = request.json.get('reponse')
+        elif question.question_type == 'questionChoixMultiple':
+            question.proposition1 = request.json.get('proposition1')
+            question.proposition2 = request.json.get('proposition2')
+            question.bonne_reponse = request.json.get('bonne_reponse')
+        
+        db.session.commit()
         return jsonify ({'question': question.to_json()}), 201
     return abort(404)
 
@@ -89,8 +102,11 @@ def delete_question(questionnaire_id, question_numero):
         supprime = questionnaire.del_question(question_numero)
         if supprime:
             questions = questionnaire.get_questions()
-            for i in range(question_numero-1, len(questions)):
-                questions[i].set_numero(questions[i].get_numero()-1)
+            for i in range(len(questions)):
+                questions[i].set_numero(i + 1)
+            
+            db.session.commit()
+            
             return make_response(jsonify({'status': 'deleted'}), 200)
     return abort(404)
 
