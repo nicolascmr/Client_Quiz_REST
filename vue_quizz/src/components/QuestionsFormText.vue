@@ -20,7 +20,7 @@ export default {
 
   methods:{
     checkTruthiness : function() {
-        this.$emit('isTrue',{bool: this.answer == this.input});
+        this.$emit('isTrue',{bool: this.answer == this.input, userAnswer: this.input});
     }
   },
   emits : ['isTrue']
