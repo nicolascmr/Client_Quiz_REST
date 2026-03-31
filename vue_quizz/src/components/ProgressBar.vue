@@ -38,7 +38,7 @@ export default {
 .progress-container {
   width: 100%;
   max-width: 300px;
-  margin: 20px 0;
+  margin: 20px auto; 
   text-align: center;
 }
 
