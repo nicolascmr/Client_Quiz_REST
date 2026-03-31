@@ -24,7 +24,7 @@ export default {
 
   methods:{
     checkTruthiness : function() {
-        this.$emit('isTrue',{answer: this.answer == this.selected});
+        this.$emit('isTrue',{answer: this.answer == this.selected, userAnswer: this.selected});
     }
   },
   emits : ['isTrue']
