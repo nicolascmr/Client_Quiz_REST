@@ -57,37 +57,24 @@ export default {
     QuestionsFormQCM,
     QuestionsFormText,
     ProgressBar
+    
   },
   data() {
     return {
       currentQuestion: 0,
       dailyGoal: 8,
-      correctAnswers: {}, // On remplace "score: 0" par un objet qui garde l'état de chaque question
+      correctAnswers: {},
       scoreMax: 0,
-      questions: [
-        {
-          id: 1,
-          type: 'text',
-          question_name: 'Quelle est la capitale de la France ?',
-          answer: 'Paris'
-        },
-        {
-          id: 2,
-          type: 'qcm',
-          question_name: 'Combien font 2 + 2 ?',
-          options: ['3', '4', '5'],
-          answer: '4'
-        }
-      ]
+      quiz: null,
+
     };
   },
   computed: {
     score() {
-      // Calcule le score en comptant les questions où la réponse enregistrée est `true`
       return Object.values(this.correctAnswers).filter(isCorrect => isCorrect === true).length;
     },
     activeQuestion() {
-      return this.questions[this.currentQuestion] ?? null;
+      return this.quiz.questions[this.currentQuestion] ?? null;
     },
     canGoPrevious() {
       return this.currentQuestion > 0;
@@ -102,7 +89,7 @@ export default {
   },
   methods: {
     setScoreMax() {
-      this.scoreMax = this.questions.length;
+      this.scoreMax = this.quiz.questions.length;
     },
     checkTruthiness(payload) {
       // payload contient {answer: true/false} pour QCM ou {bool: true/false} pour Text
@@ -120,8 +107,17 @@ export default {
       if (this.currentQuestion < this.scoreMax) {
         this.currentQuestion++;
       }
-    }
+    },
+    getQuizDetail: async function() {
+        const data = await this.api.getQuiz(this.$route.params.id);
+        if (data) {
+            this.quiz = data.questionnaire;
+        }
+    },
     
+  },
+  mounted: async function() {
+      this.getQuizDetail();
   },
   beforeMount() {
     this.setScoreMax();
