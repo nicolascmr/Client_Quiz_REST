@@ -1,11 +1,13 @@
 <script setup>
-import PlayView from './views/PlayView.vue'
+import AdminView from './views/AdminView.vue';
+
 </script>
 
 <template>
-  <div>
-    <PlayView/>
-  </div>
+  <nav>
+    <RouterLink to="/admin">Page d'edition</RouterLink>
+  </nav>  
+  <RouterView />
 </template>
 
 <style scoped>

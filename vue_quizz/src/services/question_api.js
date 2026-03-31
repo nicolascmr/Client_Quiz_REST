@@ -1,10 +1,10 @@
-export default class API {
+export default class QuestionAPI {
     constructor(url = 'http://localhost:5000') {
         this.url = url;
     }
 
-    async getQuizs(){
-        const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs`);
+    async getQuestions(idQuizz){
+        const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${idQuizz}`);
         if (response.ok){
             const json = await response.json();
             return json;
@@ -12,8 +12,8 @@ export default class API {
         return null;
     }
 
-    async getQuiz(id){
-        const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`);
+    async getQuestion(idQuizz, id){
+        const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${idQuizz}/${id}`);
         if (response.ok){
             const json = await response.json();
             return json;
@@ -21,9 +21,9 @@ export default class API {
         return null;
     }
 
-    async deleteQuiz(id) {
+    async deleteQuiz(idQuizz,id) {
         try{
-            const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${id}`, {
+            const response = await fetch(`${this.url}/quizz_app/api/v1.0/quizzs/${idQuizz}/${id}`, {
                 method: 'DELETE'
             });
             if (!response.ok) {

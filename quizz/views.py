@@ -59,6 +59,22 @@ def modify_quizz(questionnaire_id):
         return jsonify ({'questionnaire': questionnaire.to_json()}), 201
     return abort(404)
 
+@app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>/<int:question_id>', methods = ['POST'])
+def modify_question(questionnaire_id, question_id):
+    if not request.json or not 'enonce' in request.json:
+        return abort(400)
+    questionnaire = Questionnaire.query.get(questionnaire_id)
+    question = questionnaire.get_question(question_id)
+    if questionnaire:
+        question.enonce = request.json['enonce']
+        question.question_type = request.json.get('question_type', 'question')
+        question.reponse = request.json.get('reponse')
+        question.proposition1 = request.json.get('proposition1')
+        question.proposition2 = request.json.get('proposition2')
+        question.bonne_reponse = request.json.get('bonne_reponse')
+        return jsonify ({'question': question.to_json()}), 201
+    return abort(404)
+
 @app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>', methods = ['DELETE'])
 def delete_quizz(questionnaire_id):
     supprime = Questionnaire.del_questionnaire(questionnaire_id)

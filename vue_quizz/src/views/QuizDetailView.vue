@@ -1,11 +1,11 @@
 <script>
-import API from '../services/api';
+import QuizAPI from '../services/quizz_api';
 
 export default {
     data() {
         return {
             quiz: null,
-            api: new API()
+            api: new QuizAPI()
         }
     },
     methods: {

@@ -58,6 +58,11 @@ class Questionnaire(db.Model):
     def get_questions(self):
         return self.questions
     
+    def get_question(self, numero):
+        for i in range(len(self.questions)):
+            if(self.questions[i].numero == numero):
+                return self.questions[i]
+    
     def del_question(self, numero):
         for i in range(len(self.questions)):
             if(self.questions[i].numero == numero):
