@@ -55,6 +55,7 @@ def modify_quizz(questionnaire_id):
     questionnaire = Questionnaire.query.get(questionnaire_id)
     if questionnaire:
         questionnaire.nom = request.json['nom']
+        db.session.commit()
         return jsonify ({'questionnaire': questionnaire.to_json()}), 201
     return abort(404)
 
