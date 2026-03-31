@@ -1,4 +1,4 @@
-export default class API {
+export default class QuizAPI {
     constructor(url = 'http://localhost:5000') {
         this.url = url;
     }
