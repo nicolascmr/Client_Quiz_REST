@@ -29,7 +29,10 @@ def get_quizz(questionnaire_id):
 def create_quizz():
     if not request.json or not 'nom' in request.json:
         return abort(400)
+    
     questionnaire = Questionnaire.add_questionnaire(request.json['nom'])
+    if questionnaire is None:
+        return jsonify({'error': 'Un quiz avec ce nom existe déjà.'}), 400
     return jsonify ({'questionnaire': questionnaire.to_json()}), 201
 
 @app.route('/quizz_app/api/v1.0/quizzs/<int:questionnaire_id>', methods = ['POST'])
@@ -62,6 +65,11 @@ def create_question(questionnaire_id):
 def modify_quizz(questionnaire_id):
     if not request.json or not 'nom' in request.json:
         return abort(400)
+    
+    existing = Questionnaire.query.filter_by(nom=request.json['nom']).first()
+    if existing and existing.id != questionnaire_id:
+        return jsonify({'error': 'Un quiz avec ce nom existe déjà.'}), 400
+
     questionnaire = Questionnaire.query.get(questionnaire_id)
     if questionnaire:
         questionnaire.nom = request.json['nom']

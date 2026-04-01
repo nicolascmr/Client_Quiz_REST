@@ -9,6 +9,7 @@
         v-if="activeQuestion.question_type === 'questionOuverte'"
         :question_name="activeQuestion.enonce"
         :answer="activeQuestion.reponse"
+        :previous_answer="userAnswers[currentQuestion]"
         @isTrue="checkTruthiness"
         :key="'text-' + activeQuestion.numero"
       />
@@ -18,6 +19,7 @@
         :question_name="activeQuestion.enonce"
         :options="[activeQuestion.proposition1, activeQuestion.proposition2]"
         :answer="activeQuestion.bonne_reponse === 1 ? activeQuestion.proposition1 : activeQuestion.proposition2"
+        :previous_answer="userAnswers[currentQuestion]"
         @isTrue="checkTruthiness"
         :key="'qcm-' + activeQuestion.numero"
       />
@@ -33,7 +35,7 @@
       <p>Vous avez fini le questionnaire !</p>
 
       <div>
-        <div v-for="(question, index) in quiz.questions" :key="index" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid lightgray; border-radius: 8px;">
+        <div v-for="(question, index) in quiz.questions" :key="index" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 8px;" :style="{ border: '2px solid ' + (correctAnswers[index] ? 'green' : 'red') }">
           <h3 style="margin-top: 0;">Question n°{{ question.numero }} : {{ question.enonce }}</h3>
           <p>
             Votre réponse : 

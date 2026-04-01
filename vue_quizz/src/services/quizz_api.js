@@ -49,7 +49,7 @@ export default class QuizAPI {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || "Erreur lors de l'ajout");
+                throw new Error(errorData.error || errorData.message || "Erreur lors de l'ajout");
             }
             return await response.json();
         } catch (error) {
@@ -69,7 +69,7 @@ export default class QuizAPI {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || "Erreur de suppression");
+                throw new Error(errorData.error || errorData.message || "Erreur de modification");
             }
 
             return await response.json();
