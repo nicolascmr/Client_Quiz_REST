@@ -1,6 +1,8 @@
 <template>
   <div class="form-text">
+    <span>Énoncé: </span>
     <input type="text" v-model="local_name"/>
+    <span>Réponse: </span>
     <input type="text" v-model="local_answer"/>
   </div>
   <div v-if="!creating">
@@ -36,11 +38,19 @@ export default {
       this.$parent.isCreate = false;
     },
     enregistrerQuestion: async function(idQuizz, numero) {
+      if (this.local_name == "" || this.local_answer == ""){
+        alert("Vous ne pouvez pas laisser un champ vide")
+        return;
+      }
       await this.api.modifyQuestionOuverte(idQuizz, numero, this.local_name, this.local_answer);
       this.$parent.getQuizDetail();
       this.retourQuestion(numero);
     },
     creerQuestion: async function(idQuizz) {
+      if (this.local_name == "" || this.local_answer == ""){
+        alert("Vous ne pouvez pas laisser un champ vide")
+        return;
+      }
       await this.api.addQuestionOuverte(idQuizz, this.local_name, this.local_answer);
       this.$parent.getQuizDetail();
       this.$parent.isCreate = false;
