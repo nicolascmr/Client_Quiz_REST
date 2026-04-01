@@ -77,6 +77,7 @@
 import QuestionsFormQCM from '../components/QuestionsFormQCM.vue';
 import QuestionsFormText from '../components/QuestionsFormText.vue';
 import ProgressBar from '../components/ProgressBar.vue';
+import QuizAPI from '../services/quizz_api';
 
 export default {
   components: {
@@ -93,7 +94,7 @@ export default {
       userAnswers: {},
       scoreMax: 0,
       quiz: null,
-      api: new API()
+      api: new QuizAPI()
     };
   },
   computed: {
