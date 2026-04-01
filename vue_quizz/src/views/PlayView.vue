@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import API from '../services/api';
 import QuestionsFormQCM from '../components/QuestionsFormQCM.vue';
 import QuestionsFormText from '../components/QuestionsFormText.vue';
 import ProgressBar from '../components/ProgressBar.vue';
