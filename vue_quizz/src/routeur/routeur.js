@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter} from 'vue-router'
-import App from '../App.vue'
 import AdminView  from '../views/AdminView.vue'
 import QuizDetailView from '../views/QuizDetailView.vue'
 import QuizPlayListView from '../views/QuizPlayListView.vue'

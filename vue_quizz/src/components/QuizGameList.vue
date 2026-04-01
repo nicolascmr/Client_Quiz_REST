@@ -1,5 +1,5 @@
 <script>
-import API from '../services/api';
+import QuizAPI from '../services/quizz_api.js';
 import QuizItem from './QuizItem.vue';
 
 export default{
@@ -9,7 +9,7 @@ export default{
     data() {
         return {
             quizList: [],
-            api: new API()
+            api: new QuizAPI()
         }
     },
     methods:{
