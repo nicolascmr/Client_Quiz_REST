@@ -49,6 +49,8 @@ Ouvrez un **nouveau** terminal en laissant tourner le serveur Flask :
    ```
    L'application sera accessible via l'URL indiquée dans le terminal.
 
+4. **Le mot de passe pour accéder à la page admin est : "admin"**
+
 ## Structure du projet Vue
 
 Nous avons structuré notre client avec plusieurs dossiers : 
