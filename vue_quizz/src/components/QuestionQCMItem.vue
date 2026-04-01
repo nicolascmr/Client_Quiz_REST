@@ -1,9 +1,12 @@
 <template>
   <div class="form-text">
+    <span>Énoncé: </span>
     <input type="text" v-model="local_name"/>
     <div v-for="(option, index) in local_options" :key="index">
+      <span>Proposition {{ index+1 }}: </span>
         <input type="text" v-model="local_options[index]">
     </div>
+    <span>Bonne proposition: </span>
     <input type="text" v-model="local_answer"/>
   </div>
   <div v-if="!creating">
@@ -41,11 +44,18 @@ export default {
       this.$parent.isCreate = false;
     },
     enregistrerQuestion: async function(idQuizz, numero) {
+      if (this.local_name == "" || this.local_answer == "" || any(this.local_options.forEach(element => {element == ""}))){
+        alert("Vous ne pouvez pas laisser un champ vide")
+        return;
+      }
       await this.api.modifyQuestionQCM(idQuizz, numero, this.local_name, this.local_options, parseInt(this.local_answer));
       this.$parent.getQuizDetail();
       this.$parent.modifierQuestion(numero);
     },
     creerQuestion: async function(idQuizz) {
+      if (this.local_name == "" || this.local_answer == "" || this.local_options.forEach(element => {element == ""})){
+        annulerCreation()
+      }
       await this.api.addQuestionQCM(idQuizz, this.local_name, this.local_options, parseInt(this.local_answer));
       this.$parent.getQuizDetail();
       this.$parent.isCreate = false;
