@@ -13,12 +13,13 @@ export default {
   props: {
     question_name: String,
     options: Array,
-    answer: String
+    answer: String,
+    previous_answer: String
   },
 
   data() {
     return {
-      selected: "",
+      selected: this.previous_answer || "",
     }
   },
 

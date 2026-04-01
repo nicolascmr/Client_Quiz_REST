@@ -9,12 +9,13 @@
 export default {
   props: {
     question_name: String,
-    answer: String
+    answer: String,
+    previous_answer: String
   },
 
   data() {
     return {
-      input: ""
+      input: this.previous_answer || ""
     }
   },
 

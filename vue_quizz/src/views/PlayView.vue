@@ -9,6 +9,7 @@
         v-if="activeQuestion.question_type === 'questionOuverte'"
         :question_name="activeQuestion.enonce"
         :answer="activeQuestion.reponse"
+        :previous_answer="userAnswers[currentQuestion]"
         @isTrue="checkTruthiness"
         :key="'text-' + activeQuestion.numero"
       />
@@ -18,6 +19,7 @@
         :question_name="activeQuestion.enonce"
         :options="[activeQuestion.proposition1, activeQuestion.proposition2]"
         :answer="activeQuestion.bonne_reponse === 1 ? activeQuestion.proposition1 : activeQuestion.proposition2"
+        :previous_answer="userAnswers[currentQuestion]"
         @isTrue="checkTruthiness"
         :key="'qcm-' + activeQuestion.numero"
       />
