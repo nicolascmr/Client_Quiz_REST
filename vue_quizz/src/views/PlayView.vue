@@ -33,7 +33,7 @@
       <p>Vous avez fini le questionnaire !</p>
 
       <div>
-        <div v-for="(question, index) in quiz.questions" :key="index" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid lightgray; border-radius: 8px;">
+        <div v-for="(question, index) in quiz.questions" :key="index" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 8px;" :style="{ border: '2px solid ' + (correctAnswers[index] ? 'green' : 'red') }">
           <h3 style="margin-top: 0;">Question n°{{ question.numero }} : {{ question.enonce }}</h3>
           <p>
             Votre réponse : 

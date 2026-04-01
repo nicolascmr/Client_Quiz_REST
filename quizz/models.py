@@ -27,10 +27,13 @@ class Questionnaire(db.Model):
     
     @staticmethod
     def add_questionnaire(nom):
-        questionnaire = Questionnaire(nom)
-        db.session.add(questionnaire)
-        db.session.commit()
-        return questionnaire
+        q = Questionnaire.query.filter_by(nom=nom).first()
+        if not q:
+            questionnaire = Questionnaire(nom)
+            db.session.add(questionnaire)
+            db.session.commit()
+            return questionnaire
+        return None
     
     @staticmethod
     def del_questionnaire(q_id):

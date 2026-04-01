@@ -10,6 +10,7 @@ export default{
         return {
             quizList: [],
             newQuizNom: '',
+            errorMessage: '',
             api: new QuizAPI()
         }
     },
@@ -27,13 +28,24 @@ export default{
 
       },
       modifyItem: async function(quiz) {
-            await this.api.modifyQuiz(quiz.id, quiz.nom)
-            this.get()
+          try {
+              this.errorMessage = '';
+              await this.api.modifyQuiz(quiz.id, quiz.nom)
+              this.get()
+          } catch (error) {
+              this.errorMessage = error.message;
+              this.get()
+          }
       },
       addItem: async function() {
+          try {
+              this.errorMessage = '';
               await this.api.addQuiz(this.newQuizNom);
               this.newQuizNom = '';
               this.get();
+          } catch (error) {
+              this.errorMessage = error.message;
+          }
       }
     },
     
@@ -44,6 +56,9 @@ export default{
 </script>
 <template>
     <div id="main">
+        <div v-if="errorMessage" class="alert alert-danger" style="color: red; margin-bottom: 10px;">
+            {{ errorMessage }}
+        </div>
         <form @submit.prevent="addItem">
             <label>Nom : </label>
             <input type="text" name="name" v-model="newQuizNom" required />
